@@ -4,19 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ThreatRift | Redefining Threat Operations</title>
-  <meta name="description" content="A new approach to cyber threat operations. ThreatRift is redefining how organizations detect, analyze, and respond to adversarial threats.">
+  <meta name="description" content="Autonomous threat intelligence, hunting, and detection engineering — helping security teams do more, faster.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://threatrift.com">
 
   <meta property="og:title" content="ThreatRift | Redefining Threat Operations">
-  <meta property="og:description" content="A new approach to cyber threat operations. Currently in stealth.">
+  <meta property="og:description" content="Autonomous threat intelligence, hunting, and detection engineering — helping security teams do more, faster.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://threatrift.com">
   <meta property="og:site_name" content="ThreatRift">
+  <meta property="og:image" content="https://threatrift.com/assets/logo-tagline.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ThreatRift — Weaponized Intelligence">
 
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ThreatRift | Redefining Threat Operations">
-  <meta name="twitter:description" content="A new approach to cyber threat operations. Currently in stealth.">
+  <meta name="twitter:description" content="Autonomous threat intelligence, hunting, and detection engineering — helping security teams do more, faster.">
+  <meta name="twitter:image" content="https://threatrift.com/assets/logo-tagline.png">
+  <meta name="twitter:image:alt" content="ThreatRift — Weaponized Intelligence">
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 
@@ -24,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/tailwind.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -35,11 +41,11 @@
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            base: '#0a0a0f',
-            crimson: {
-              DEFAULT: '#dc2626',
-              dark: '#991b1b',
-              glow: '#dc262620',
+            ink: '#26290e',
+            lime: {
+              DEFAULT: '#daf046',
+              dark: '#b8cc38',
+              glow: '#daf04620',
             },
           },
         },
@@ -50,8 +56,10 @@
   <style>
     body {
       background-color: #0a0a0f;
+      color: #e5e7eb;
+      font-family: "Inter", system-ui, sans-serif;
       background-image:
-        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(220, 38, 38, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 50% 30%, rgba(218, 240, 70, 0.04) 0%, transparent 70%),
         radial-gradient(ellipse 80% 60% at 50% 50%, rgba(30, 30, 60, 0.15) 0%, transparent 80%);
     }
 
@@ -61,32 +69,364 @@
         linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
       background-size: 64px 64px;
     }
+
+    #constellation {
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 66%, transparent 100%);
+              mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 66%, transparent 100%);
+    }
+
+    .chart-line {
+      stroke-dasharray: 900;
+      stroke-dashoffset: 900;
+      transition: stroke-dashoffset 1.4s ease;
+    }
+
+    .is-visible .chart-line {
+      stroke-dashoffset: 0;
+    }
+
+    .tr-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .tr-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(218, 240, 70, 0.35);
+      box-shadow: 0 0 34px -10px rgba(218, 240, 70, 0.45);
+    }
+
+    .tr-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      background: #daf046;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .tr-card:hover .tr-accent {
+      transform: scaleX(1);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chart-line {
+        stroke-dashoffset: 0;
+        transition: none;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
+    a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid #daf046;
+      outline-offset: 2px;
+      border-radius: 3px;
+    }
   </style>
 </head>
 <body class="font-body text-gray-100 antialiased">
-  <div class="grid-overlay fixed inset-0 pointer-events-none" aria-hidden="true"></div>
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:bg-lime focus:text-black focus:px-4 focus:py-2 focus:rounded font-medium">Skip to content</a>
+  <div class="grid-overlay fixed inset-0 pointer-events-none" aria-hidden="true" focusable="false"></div>
 
-  <div class="relative min-h-screen flex flex-col">
-    <main class="flex-1 flex items-center justify-center px-6">
-      <div class="max-w-2xl w-full text-center">
-        <h1 class="font-heading font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight leading-none select-none">
-          <span class="text-white">Threat</span><span class="text-red-600">Rift</span>
-        </h1>
-
-        <p class="mt-6 font-heading text-lg sm:text-xl text-gray-400 tracking-tight">
-          Weaponized Intelligence
-        </p>
-
-        <p class="mt-4 text-sm sm:text-base text-gray-500 max-w-md mx-auto leading-relaxed">
-          A new approach to cyber threat operations.<br class="hidden sm:inline">
-          Currently in stealth.
-        </p>
+  <div class="relative min-h-screen flex flex-col overflow-x-hidden">
+    <!-- Nav -->
+    <nav aria-label="Primary" class="sticky top-0 z-20 backdrop-blur bg-[#0a0a0f]/70 px-6 py-4">
+      <div class="max-w-5xl mx-auto flex items-center justify-between">
+        <a href="index.html" class="inline-block">
+          <img
+            src="assets/logo.png"
+            alt="ThreatRift"
+            class="h-auto w-[130px] max-w-[130px]"
+            width="130"
+            height="auto"
+          >
+        </a>
+        <div class="flex items-center gap-6">
+          <a href="index.html" class="text-sm text-lime transition-colors">Home</a>
+          <a href="about.html" class="text-sm text-gray-300 hover:text-lime transition-colors">About</a>
+        </div>
       </div>
+    </nav>
+
+    <main id="main">
+    <!-- Hero -->
+    <section class="relative overflow-hidden min-h-[55vh] flex items-center justify-center px-6 py-12">
+      <canvas id="constellation" class="absolute inset-0 w-full h-full z-0 pointer-events-none" aria-hidden="true" focusable="false"></canvas>
+      <div class="relative z-10 max-w-2xl w-full min-w-0 text-center">
+        <img
+          src="assets/logo-tagline.png"
+          alt="ThreatRift — Weaponized Intelligence"
+          class="mx-auto w-64 sm:w-96 md:w-[440px] max-w-full h-auto"
+          width="440"
+          height="auto"
+        >
+
+        <h1 class="sr-only">ThreatRift — Weaponized Intelligence</h1>
+      </div>
+    </section>
+
+    <!-- The Problem -->
+    <section class="px-6 py-16 sm:py-20 reveal">
+      <div class="max-w-5xl mx-auto grid sm:grid-cols-2 gap-10 items-start">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-lime/70 font-mono">THE PROBLEM</p>
+          <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white mt-3 mb-5">There's always more than the team can cover.</h2>
+          <p class="text-gray-300 max-w-2xl leading-relaxed text-sm sm:text-base">
+            Even the best security teams run out of hours before they run out of threats to chase. More tools and more people rarely close that gap — the work just keeps growing.
+          </p>
+        </div>
+        <div class="w-full">
+          <svg class="w-full h-auto max-w-xs mx-auto sm:mx-0 sm:ml-auto" viewBox="0 0 480 300" fill="none" role="img" aria-label="Line chart: threats and workload rise steeply while team capacity stays flat, creating a widening coverage gap." focusable="false">
+            <line x1="40" y1="250" x2="450" y2="250" stroke="rgba(255,255,255,0.12)"/>
+            <line x1="40" y1="30" x2="40" y2="250" stroke="rgba(255,255,255,0.12)"/>
+            <path d="M40 240 C 160 235 300 160 440 40 L 440 205 C 300 218 160 228 40 236 Z" fill="rgba(218,240,70,0.10)"/>
+            <path class="chart-line line-threat" d="M40 236 C 160 228 300 160 440 40" stroke="#daf046" stroke-width="2.5" stroke-linecap="round"/>
+            <path class="chart-line line-cap" d="M40 240 C 160 238 300 210 440 205" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/>
+            <text x="255" y="55" font-family="JetBrains Mono, monospace" font-size="12" fill="#daf046">THREATS &amp; WORKLOAD</text>
+            <text x="300" y="225" font-family="JetBrains Mono, monospace" font-size="12" fill="#9ca3af">TEAM CAPACITY</text>
+            <text x="150" y="175" font-family="JetBrains Mono, monospace" font-size="12" fill="rgba(218,240,70,0.7)">THE GAP</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- What We Do -->
+    <section class="px-6 py-16 sm:py-20">
+      <div class="max-w-5xl mx-auto">
+        <div class="reveal">
+          <p class="text-xs uppercase tracking-widest text-lime/70 font-mono">WHAT WE DO</p>
+          <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white mt-3 mb-5">Faster, more mature operations.</h2>
+          <p class="text-gray-300 max-w-2xl leading-relaxed text-sm sm:text-base mb-10">
+            ThreatRift helps security teams operate faster and more effectively — taking on work that normally demands a room full of specialists, and running it continuously in the background.
+          </p>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-3">
+          <div class="tr-card relative overflow-hidden border border-white/10 bg-white/[0.03] rounded-xl p-6 transition duration-300 reveal" style="transition-delay: 0ms">
+            <span class="tr-accent"></span>
+            <span class="absolute top-4 right-4 font-mono text-xs text-lime/60">01</span>
+            <svg class="w-7 h-7 text-lime mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+              <circle cx="12" cy="12" r="2.6"/>
+            </svg>
+            <h3 class="font-heading font-bold text-lg text-white mb-2">Threat Intelligence</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">Know what matters. We surface the threats worth your attention and cut out the noise.</p>
+          </div>
+          <div class="tr-card relative overflow-hidden border border-white/10 bg-white/[0.03] rounded-xl p-6 transition duration-300 reveal" style="transition-delay: 100ms">
+            <span class="tr-accent"></span>
+            <span class="absolute top-4 right-4 font-mono text-xs text-lime/60">02</span>
+            <svg class="w-7 h-7 text-lime mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="7"/>
+              <line x1="12" y1="1.5" x2="12" y2="5"/>
+              <line x1="12" y1="19" x2="12" y2="22.5"/>
+              <line x1="1.5" y1="12" x2="5" y2="12"/>
+              <line x1="19" y1="12" x2="22.5" y2="12"/>
+              <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>
+            </svg>
+            <h3 class="font-heading font-bold text-lg text-white mb-2">Threat Hunting</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">Find it first. Proactive pursuit of what's hiding in your environment.</p>
+          </div>
+          <div class="tr-card relative overflow-hidden border border-white/10 bg-white/[0.03] rounded-xl p-6 transition duration-300 reveal" style="transition-delay: 200ms">
+            <span class="tr-accent"></span>
+            <span class="absolute top-4 right-4 font-mono text-xs text-lime/60">03</span>
+            <svg class="w-7 h-7 text-lime mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 2 4 5v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V5l-8-3Z"/>
+              <path d="M8.5 12h2l1.4-3 1.6 5 1-2h1.5"/>
+            </svg>
+            <h3 class="font-heading font-bold text-lg text-white mb-2">Detection Engineering</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">Stay ahead. Defenses that adapt as the threat landscape shifts.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Approach -->
+    <section class="px-6 pt-16 sm:pt-20 pb-28 sm:pb-40 reveal">
+      <div class="max-w-5xl mx-auto">
+        <p class="text-xs uppercase tracking-widest text-lime/70 font-mono">OUR APPROACH</p>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white mt-3 mb-5">Autonomous where it accelerates. Human where it matters.</h2>
+        <p class="text-gray-300 max-w-2xl leading-relaxed text-sm sm:text-base">
+          We take on the relentless, repetitive work of threat operations so your team doesn't have to — while keeping a human in control of every decision that counts.
+        </p>
+        <div class="grid gap-5 sm:grid-cols-2 mt-8">
+          <div class="tr-card relative overflow-hidden border border-white/10 bg-white/[0.03] rounded-xl p-6 transition duration-300 reveal" style="transition-delay: 0ms">
+            <span class="tr-accent"></span>
+            <svg class="w-7 h-7 text-lime mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <rect x="6.5" y="6.5" width="11" height="11" rx="2"/>
+              <path d="M9.5 3v3.5M14.5 3v3.5M9.5 17.5V21M14.5 17.5V21M3 9.5h3.5M3 14.5h3.5M17.5 9.5H21M17.5 14.5H21"/>
+            </svg>
+            <h3 class="font-heading font-bold text-base text-white mb-2">Autonomous by design</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">The constant, repetitive work of staying ahead runs continuously on its own — no queue to wait on, no manual grind.</p>
+          </div>
+          <div class="tr-card relative overflow-hidden border border-white/10 bg-white/[0.03] rounded-xl p-6 transition duration-300 reveal" style="transition-delay: 100ms">
+            <span class="tr-accent"></span>
+            <svg class="w-7 h-7 text-lime mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="10" cy="8" r="3.2"/>
+              <path d="M4 19.5a6 6 0 0 1 12 0"/>
+              <path d="M15.3 10.6l1.6 1.6 3-3.2"/>
+            </svg>
+            <h3 class="font-heading font-bold text-base text-white mb-2">Human where it counts</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">Nothing irreversible happens without human approval.</p>
+          </div>
+        </div>
+      </div>
+    </section>
     </main>
 
-    <footer class="py-6 text-center">
-      <p class="text-xs text-gray-600">&copy; 2026 ThreatRift. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="mt-auto py-8 px-6 text-center">
+      <p class="text-xs text-gray-400">
+        &copy; 2026 ThreatRift. All rights reserved.
+      </p>
+      <nav class="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-gray-400">
+        <a href="index.html" class="hover:text-lime transition-colors">Home</a>
+        <span aria-hidden="true" focusable="false" class="text-gray-400">·</span>
+        <a href="about.html" class="hover:text-lime transition-colors">About</a>
+        <span aria-hidden="true" focusable="false" class="text-gray-400">·</span>
+        <a href="privacy.html" class="hover:text-lime transition-colors">Privacy Policy</a>
+        <span aria-hidden="true" focusable="false" class="text-gray-400">·</span>
+        <a href="terms.html" class="hover:text-lime transition-colors">Terms of Service</a>
+        <span aria-hidden="true" class="text-gray-400">·</span>
+        <a href="accessibility.html" class="hover:text-lime transition-colors">Accessibility</a>
+      </nav>
     </footer>
   </div>
+
+  <script>
+    (function () {
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Constellation backdrop */
+      (function () {
+        var canvas = document.getElementById('constellation');
+        if (!canvas) return;
+
+        var ctx = canvas.getContext('2d');
+        var points = [];
+        var animId = null;
+        var resizeTimer = null;
+        var POINT_COUNT = 55;
+        var CONNECT_DIST = 155;
+        var SPEED = 0.15;
+
+        function initPoints(w, h) {
+          points = [];
+          for (var i = 0; i < POINT_COUNT; i++) {
+            points.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * SPEED,
+              vy: (Math.random() - 0.5) * SPEED
+            });
+          }
+        }
+
+        function resize() {
+          var rect = canvas.getBoundingClientRect();
+          var dpr = window.devicePixelRatio || 1;
+          canvas.width = Math.floor(rect.width * dpr);
+          canvas.height = Math.floor(rect.height * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          initPoints(rect.width, rect.height);
+          if (reducedMotion) draw(rect.width, rect.height);
+        }
+
+        function draw(w, h) {
+          ctx.clearRect(0, 0, w, h);
+
+          for (var i = 0; i < points.length; i++) {
+            for (var j = i + 1; j < points.length; j++) {
+              var dx = points[i].x - points[j].x;
+              var dy = points[i].y - points[j].y;
+              var dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < CONNECT_DIST) {
+                var alpha = 0.32 * (1 - dist / CONNECT_DIST);
+                ctx.beginPath();
+                ctx.moveTo(points[i].x, points[i].y);
+                ctx.lineTo(points[j].x, points[j].y);
+                ctx.strokeStyle = 'rgba(218,240,70,' + alpha + ')';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+              }
+            }
+          }
+
+          for (var k = 0; k < points.length; k++) {
+            ctx.beginPath();
+            ctx.arc(points[k].x, points[k].y, 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(218,240,70,0.55)';
+            ctx.fill();
+          }
+        }
+
+        function tick() {
+          var rect = canvas.getBoundingClientRect();
+          var w = rect.width;
+          var h = rect.height;
+
+          for (var i = 0; i < points.length; i++) {
+            var p = points[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x <= 0 || p.x >= w) p.vx *= -1;
+            if (p.y <= 0 || p.y >= h) p.vy *= -1;
+            p.x = Math.max(0, Math.min(w, p.x));
+            p.y = Math.max(0, Math.min(h, p.y));
+          }
+
+          draw(w, h);
+          animId = requestAnimationFrame(tick);
+        }
+
+        resize();
+        window.addEventListener('resize', function () {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(resize, 150);
+        });
+
+        if (!reducedMotion) tick();
+      })();
+
+      /* Scroll reveal */
+      (function () {
+        var reveals = document.querySelectorAll('.reveal');
+        if (!reveals.length) return;
+
+        if (reducedMotion) {
+          reveals.forEach(function (el) { el.classList.add('is-visible'); });
+          return;
+        }
+
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+
+        reveals.forEach(function (el) { observer.observe(el); });
+      })();
+    })();
+  </script>
+  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "59f4e896b88a42db8dfa068279e5ad2e"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
